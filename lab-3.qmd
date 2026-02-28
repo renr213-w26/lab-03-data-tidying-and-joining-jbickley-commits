@@ -1,6 +1,7 @@
 ---
 title: "Lab 3 - Data tidying and joining"
 categories: "Lab"
+author: "Jakob Bickely"
 ---
 
 # Introduction
@@ -102,8 +103,15 @@ country_inflation <- read_csv("data/country-inflation.csv")
 Get to know the data.
 
 a.  `glimpse()` at the `country_inflation` data frame and answer the following questions based on the output. How many rows does `country_inflation` have and what does each row represent? How many columns does `country_inflation` have and what does each column represent?
+```{r}
+glimpse(country_inflation)
+```
+The country_inflation table has 44 rows, and 30 columns. The columns represent years and the rows represent countries.  
 
 b.  Display a list of the countries included in the dataset.
+```{r}
+country_inflation |> pull(country) |> unique()
+```
 
 ::: callout-tip
 A function that can be useful for part (b) is `pull()`. Check out its documentation for examples of usage.
@@ -112,6 +120,10 @@ A function that can be useful for part (b) is `pull()`. Check out its documentat
 ### Question 2
 
 Which countries had the top three highest inflation rates in 2021? Your output should be a data frame with two columns, `country` and `2021`, with inflation rates in descending order, and three rows for the top three countries. Briefly comment on how the inflation rates for these countries compare to the inflation rate for United States in that year.
+```{r}
+top_inflation_2023 <- country_inflation |> select(country,`2021`) |> arrange(desc(`2021`)) |> head(n= 3)
+```
+Argentina, Turkey, and Brazil had high inflation rates of 48%, 20%, 8% all far above the US's rate of 4.9% with them being over 9X, 4X, and 1.5X their inflation.
 
 ::: callout-tip
 Column names that are numbers are not considered "proper" in R, therefore to select them you'll need to surround them with backticks, e.g. `select(` `` ` `` `1993` `` ` `` `)`.
