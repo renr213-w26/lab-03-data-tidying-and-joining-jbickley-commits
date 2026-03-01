@@ -453,7 +453,7 @@ Tip
 # ℹ 1,266 more rows</code></pre>
 </div>
 </div>
-<p>There are <code>nrow(pivoted_inflation)</code> rows and <code>ncol(pivoted_inflation)</code> columns. ::: callout-important The remaining questions in Part 1 require the use of the pivoted data frame from Question 4. :::</p>
+<p>There are 1276 rows and 3 columns. ::: callout-important The remaining questions in Part 1 require the use of the pivoted data frame from Question 4. :::</p>
 </section>
 <section id="question-5" class="level3">
 <h3 class="anchored" data-anchor-id="question-5">Question 5</h3>
@@ -625,18 +625,30 @@ Tip
 <section id="question-8" class="level3">
 <h3 class="anchored" data-anchor-id="question-8">Question 8</h3>
 <p>a. How many columns and how many rows does the <code>us_inflation</code> dataset have? What are the variables in it? Add a brief (1-2 sentences) narrative summarizing this information.</p>
+<p>The US inflation data set has 132 rows which represent division numbers for each year and 4 columns contain the data.</p>
 <p>b. How many columns and how many rows does the <code>cpi_divisions</code> dataset have? What are the variables in it? Add a brief (1-2 sentences) narrative summarizing this information.</p>
+<p>The US inflation data set has 12 rows which represent each division and 2 columns contain the information about each one.</p>
 <p>c. Create a new dataset by joining the <code>us_inflation</code> dataset with the <code>cpi_division_id</code> dataset.</p>
 <ul>
 <li><p>Determine which type of join is the most appropriate one and use that.</p></li>
 <li><p>Note that the two datasets don’t have a common variable. Review the help for the join functions to determine how to use the <code>by</code> argument when the names of the variables that the datasets should be joined by are different.</p></li>
-<li><p>Use a short but informative name for the joined dataset, and do not overwrite either of the datasets that go into creating it.</p></li>
+<li><p>Use a short but informative name for the joined dataset, and do not overwrite either of the datasets that go into creating it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>us_inflation_w_divisions <span class="ot">&lt;-</span> us_inflation <span class="sc">|&gt;</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(cpi_divisions, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"cpi_division_id"</span> <span class="ot">=</span> <span class="st">"id"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
 </ul>
 <p>Then, find the number of rows and columns of the resulting dataset and report the names of its columns. Add a brief (1-2 sentences) narrative summarizing this information.</p>
+<p>This data set has 132 rows which represent division numbers for each year and 5 columns contain the data and now has a description of the division that entry is for.</p>
 </section>
 <section id="question-9" class="level3">
 <h3 class="anchored" data-anchor-id="question-9">Question 9</h3>
 <p>a. Create a vector called <code>divisions_of_interest</code> which contains the descriptions or IDs of CPI divisions you want to visualize. Your <code>divisions_of_interest</code> should consist of no more than five divisions. If you’re using descriptions, make sure that the spelling of your divisions matches how they appear in the dataset. Then, in 1-2 sentences, state why you chose these divisions.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>divisions_of_interest <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">7</span>,<span class="dv">10</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -650,7 +662,22 @@ Tip
 <p>Refer back to the guidance provided in <a href="#question-6">Question 6</a> if you’re not sure how to create this vector.</p>
 </div>
 </div>
+<p>These divisions (Food, Clothing, Housing, Transportation, and Education) were chosen because they make up of household spending and are most relevant to visualize.</p>
 <p>b. In a single pipeline, filter your reshaped dataset to include only the <code>divisions_of_interest</code> from part (a), and save the resulting data frame with a new name so you (1) can refer to this data frame later in your analysis and (2) do not overwrite the data frame you’re starting with. Use a short but informative name. Then, in a new pipeline, find the <code>distinct()</code> divisions in the data frame you created.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>div_of_interest <span class="ot">&lt;-</span> us_inflation_w_divisions <span class="sc">|&gt;</span> <span class="fu">filter</span>(cpi_division_id <span class="sc">%in%</span> divisions_of_interest)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>div_of_interest <span class="sc">|&gt;</span> <span class="fu">distinct</span>(cpi_division_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 1
+  cpi_division_id
+            &lt;dbl&gt;
+1               1
+2               3
+3               4
+4               7
+5              10</code></pre>
+</div>
+</div>
 </section>
 <section id="question-10" class="level3">
 <h3 class="anchored" data-anchor-id="question-10">Question 10</h3>
@@ -664,16 +691,23 @@ Tip
 <li>If your legend has labels that are too long, you can try moving the legend to the bottom and stack the labels vertically. <em>Hint:</em> The <code>legend.position</code> and <code>legend.direction</code> arguments of the <code>theme()</code> functions will be useful.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span>, </span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.direction =</span> <span class="st">"vertical"</span></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>&lt;theme&gt; List of 2
- $ legend.position : chr "bottom"
- $ legend.direction: chr "vertical"
- @ complete: logi FALSE
- @ validate: logi TRUE</code></pre>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>div_of_interest <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(year, annual_inflation, <span class="at">color =</span> description))<span class="sc">+</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span>  </span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">shape =</span> description))<span class="sc">+</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Inflation In the US by Sector"</span>, <span class="at">y =</span> <span class="st">"Inflation %"</span>, <span class="at">color =</span> <span class="st">"Description"</span>, <span class="at">shape =</span> <span class="st">"Description"</span>)<span class="sc">+</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_dark</span>()<span class="sc">+</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="dv">5</span>)<span class="sc">+</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span>, </span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.direction =</span> <span class="st">"vertical"</span>,</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"grey"</span>, <span class="at">colour =</span> <span class="cn">NA</span>),    <span class="at">legend.key =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"grey"</span>, <span class="at">colour =</span> <span class="cn">NA</span>)</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab-3_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="render-commit-push">
