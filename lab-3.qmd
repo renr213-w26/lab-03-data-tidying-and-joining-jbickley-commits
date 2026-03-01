@@ -140,6 +140,11 @@ In a single pipeline,
 Do not save this new variable in `inf_ratio`, only calculate and display it so you can answer the following question based on the output of the pipeline.
 
 Which country's inflation change is the largest over this time period? Did inflation increase of decrease between 1993 and 2021 in this country?
+```{r}
+inf_ratio <- country_inflation |> select(country,`1993`,`2021`) |> mutate(inf_ratio2 = `2021`/`1993`) |> arrange(desc(inf_ratio2)) |> select(country,`1993`,`2021`)
+inf_ratio 
+```
+The country with the largest relative increase in inflation if New Zealand. The country with the larges absolute change in inflation is Brazil, where inflation fell for 1927.38% to 8.3%
 
 ::: callout-tip
 For this question you'll once again need to use variables whose names are numbers (years) in your pipeline. Make sure to surround the names of such variables with backticks (`` ` ``).
@@ -154,7 +159,13 @@ Requirements:
 -   Your code must use one of `pivot_longer()` or `pivot_wider()`. There are other ways you can do this reshaping move in R, but this question requires solving this problem by pivoting.
 -   In your `pivot_*()` function, you must use `names_transform = as.numeric` as an argument to transform the variable type to numeric as you pivot the data so that in the resulting data frame the year variable is numeric.
 -   The resulting data frame must be saved as something other than `country_inflation` so you (1) can refer to this data frame later in your analysis and (2) do not overwrite `country_inflation`. Use a short but informative name.
-
+```{r}
+pivoted_inflation <- country_inflation |> pivot_longer(-country,names_to = "year", names_transform = as.numeric, values_to= "inflation")
+pivoted_inflation
+nrow(pivoted_inflation)
+ncol(pivoted_inflation)
+```
+There are `nrow(pivoted_inflation)` rows and `ncol(pivoted_inflation)` columns.
 ::: callout-important
 The remaining questions in Part 1 require the use of the pivoted data frame from Question 4.
 :::
@@ -178,7 +189,7 @@ a\. Create a vector called `countries_of_interest` which contains the names of u
 ```{r}
 countries_of_interest <- c("Türkiye", "United States")
 ```
-
+-
 If they are Türkiye, United States, and China, you can express this as follows:
 
 ```{r}
@@ -282,8 +293,7 @@ Using your data frame from the previous question, create a plot of annual inflat
 -   If your legend has labels that are too long, you can try moving the legend to the bottom and stack the labels vertically. *Hint:* The `legend.position` and `legend.direction` arguments of the `theme()` functions will be useful.
 
 ```{r}
-ggplot(...) +
-  ... +
+
   theme(
     legend.position = "bottom", 
     legend.direction = "vertical"
